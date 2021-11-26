@@ -20,7 +20,7 @@ how to connect to lp1 ?
 
 
 MariaDB logs -> ShareLockAPI/admin
-url connection 
+url 
 
 
 # DataBase on local since i cant deploy a mysql server
