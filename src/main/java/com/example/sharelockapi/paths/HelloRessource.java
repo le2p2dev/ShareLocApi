@@ -1,5 +1,8 @@
 package com.example.sharelockapi.paths;
 
+import com.example.sharelockapi.dao.DAOUser;
+import com.example.sharelockapi.model.UserEntity;
+
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -13,7 +16,9 @@ public class HelloRessource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response hello() {
+        List userEntities = new ArrayList<UserEntity>();
+        userEntities = DAOUser.getAllUser();
+        return Response.status(200).entity(userEntities).build();
 
-        return Response.status(200).entity("hello-world").build();
     }
 }
