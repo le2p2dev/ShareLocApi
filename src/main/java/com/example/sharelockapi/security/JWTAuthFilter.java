@@ -18,8 +18,6 @@ import org.jose4j.jwt.consumer.InvalidJwtException;
 import org.jose4j.jwt.consumer.JwtConsumer;
 import org.jose4j.jwt.consumer.JwtConsumerBuilder;
 
-import com.example.sharelockapi.paths.Authentification;
-
 @Provider
 @SignNeeded
 public class JWTAuthFilter implements ContainerRequestFilter {
