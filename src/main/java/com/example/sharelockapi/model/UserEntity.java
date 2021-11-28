@@ -11,6 +11,18 @@ public class UserEntity {
     private String firstname;
     private int id;
 
+    public UserEntity(String login, String password, String lastname, String firstname, int id) {
+        this.login = login;
+        this.password = password;
+        this.lastname = lastname;
+        this.firstname = firstname;
+        this.id = id;
+    }
+
+    public UserEntity() {
+
+    }
+
     @Basic
     @Column(name = "login")
     public String getLogin() {

@@ -1,7 +1,9 @@
 package com.example.sharelockapi.paths;
 
+import com.example.sharelockapi.controllers.UserManager;
 import com.example.sharelockapi.dao.DAOUser;
 import com.example.sharelockapi.model.UserEntity;
+import com.example.sharelockapi.security.SignNeeded;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -13,12 +15,12 @@ import java.util.List;
 
 @Path("/hello-world")
 public class HelloRessource {
+
+    //@SignNeeded
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response hello() {
-        List userEntities = new ArrayList<UserEntity>();
-        userEntities = DAOUser.getAllUser();
-        return Response.status(200).entity(userEntities).build();
+        return Response.status(200).entity(UserManager.getUser(0).getFirstname()).build();
 
     }
 }
