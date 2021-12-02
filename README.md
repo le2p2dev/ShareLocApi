@@ -23,11 +23,27 @@ MariaDB logs -> ShareLockAPI/admin
 url 
 
 
-# DataBase on local since i cant deploy a mysql server
+#How to test remote database 
 
-ask matthieu for his server access
+on doit faire une redirection de port 
 
-test for github webhook
+ssh -L NumeroDePort:localhost:3306 ls1@cdad178.iutrs.unistra.fr
+
+starwolf
+
+d'ici là on peut acceder à notre base de donnée 
+
+avec comme url 
+
+jdbc:mysql://localhost:3630/db_ShareLoc?useSSL=false
+
+-> user : ApiShareloc
+-> password : yassin
+-> host : localhost 
+-> database : db_shareloc
+
+
+
 
 
 
