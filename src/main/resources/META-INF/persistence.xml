@@ -5,6 +5,10 @@
              version="2.2">
     <persistence-unit name="default">
         <class>com.example.sharelockapi.model.UserEntity</class>
+        <class>com.example.sharelockapi.model.CategoryEntity</class>
+        <class>com.example.sharelockapi.model.TaskEntity</class>
+        <class>com.example.sharelockapi.model.HouseshareEntity</class>
+        <class>com.example.sharelockapi.model.UserHasHouseshareEntity</class>
 
         <properties>
             <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/db_ShareLoc?useSSL=false"/>
