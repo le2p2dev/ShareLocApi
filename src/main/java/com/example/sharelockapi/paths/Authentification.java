@@ -54,6 +54,8 @@ public class Authentification {
     @Produces(MediaType.APPLICATION_JSON)
     public Response signup(@QueryParam("login") String login, @QueryParam("password") String password,
                            @QueryParam("firstname") String firstname, @QueryParam("lastname") String lastname,@QueryParam("id") int id) {
+
+
         if (UserManager.createUser(login, password, firstname, lastname,id))
             return Response.status(Status.OK).entity("done").build();
         return Response.status(Status.CONFLICT).build();

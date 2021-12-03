@@ -18,9 +18,7 @@ import com.example.sharelockapi.controllers.HouseShareManager;
 import com.example.sharelockapi.controllers.UserHasHouseShareManager;
 import com.example.sharelockapi.controllers.UserManager;
 import com.example.sharelockapi.model.HouseshareEntity;
-import com.example.sharelockapi.model.UserEntity;
 import com.example.sharelockapi.model.UserHasHouseshareEntity;
-import com.example.sharelockapi.security.JWTokenUtility;
 import com.example.sharelockapi.security.SignNeeded;
 
 @Path("/houseshare")
