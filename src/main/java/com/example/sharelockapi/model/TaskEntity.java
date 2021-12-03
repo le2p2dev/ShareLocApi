@@ -6,9 +6,24 @@ import javax.persistence.*;
 @Table(name = "Task", schema = "db_ShareLoc", catalog = "")
 public class TaskEntity {
     private int id;
+    private int houseShareId;
+    private int categoryId;
     private Integer points;
     private String description;
     private String title;
+
+    public TaskEntity(int id, int houseShareId, int categoryId, Integer points, String description, String title) {
+        this.id = id;
+        this.houseShareId = houseShareId;
+        this.categoryId = categoryId;
+        this.points = points;
+        this.description = description;
+        this.title = title;
+    }
+
+    public TaskEntity() {
+
+    }
 
     @Id
     @Column(name = "id")
@@ -19,6 +34,24 @@ public class TaskEntity {
     public void setId(int id) {
         this.id = id;
     }
+
+    @Column(name = "houseshare_id")
+    public int getHouseShareId(){
+        return houseShareId;
+    }
+    public void setHouseShareId(int houseShareId){
+        this.houseShareId = houseShareId;
+    }
+
+
+    @Column(name = "category_id")
+    public int getCategoryId() {
+        return categoryId;
+    }
+    public void setCategoryId(int categoryId) {
+        this.categoryId = categoryId;
+    }
+
 
     @Basic
     @Column(name = "points")
@@ -49,6 +82,8 @@ public class TaskEntity {
     public void setTitle(String title) {
         this.title = title;
     }
+
+
 
     @Override
     public boolean equals(Object o) {

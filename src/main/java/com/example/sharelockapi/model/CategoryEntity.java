@@ -8,6 +8,10 @@ public class CategoryEntity {
     private int id;
     private String label;
 
+    public CategoryEntity() {
+
+    }
+
     @Id
     @Column(name = "id")
     public int getId() {
@@ -27,6 +31,13 @@ public class CategoryEntity {
     public void setLabel(String label) {
         this.label = label;
     }
+
+    public CategoryEntity(int id, String label) {
+        this.id = id;
+        this.label = label;
+    }
+
+
 
     @Override
     public boolean equals(Object o) {

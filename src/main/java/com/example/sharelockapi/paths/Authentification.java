@@ -40,8 +40,8 @@ public class Authentification {
     @POST
     @Path("/signin")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response signin(@QueryParam("id") int id,@QueryParam("login") String login, @QueryParam("password") String password) {
-        UserEntity u = UserManager.login(id,login, password);
+    public Response signin(@QueryParam("login") String login, @QueryParam("password") String password) {
+        UserEntity u = UserManager.login(login, password);
 
         if (u != null)
             return Response.ok().entity(JWTokenUtility.buildJWT(u.getLogin())).build();

@@ -6,8 +6,20 @@ import javax.persistence.*;
 @Table(name = "user_has_houseshare", schema = "db_ShareLoc", catalog = "")
 public class UserHasHouseshareEntity {
     private int userId;
+    private int houseShareId;
     private Integer point;
     private Byte isOwner;
+
+    public UserHasHouseshareEntity(int userId, int houseShareId, Integer point, Byte isOwner) {
+        this.userId = userId;
+        this.houseShareId = houseShareId;
+        this.point = point;
+        this.isOwner = isOwner;
+    }
+
+    public UserHasHouseshareEntity() {
+
+    }
 
     @Id
     @Column(name = "user_id")
@@ -17,6 +29,14 @@ public class UserHasHouseshareEntity {
 
     public void setUserId(int userId) {
         this.userId = userId;
+    }
+
+    @Column(name = "houseshare_id")
+    public int getHouseShareId() {
+        return houseShareId;
+    }
+    public void setHouseShareId(int houseShareId) {
+        this.houseShareId = houseShareId;
     }
 
     @Basic
