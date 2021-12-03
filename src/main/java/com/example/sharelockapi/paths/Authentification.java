@@ -40,8 +40,8 @@ public class Authentification {
     @POST
     @Path("/signin")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response signin(@QueryParam("id") int id,@QueryParam("login") String login, @QueryParam("password") String password) {
-        UserEntity u = UserManager.login(id,login, password);
+    public Response signin(@QueryParam("login") String login, @QueryParam("password") String password) {
+        UserEntity u = UserManager.login(login, password);
 
         if (u != null)
             return Response.ok().entity(JWTokenUtility.buildJWT(u.getLogin())).build();
@@ -55,7 +55,7 @@ public class Authentification {
     public Response signup(@QueryParam("login") String login, @QueryParam("password") String password,
                            @QueryParam("firstname") String firstname, @QueryParam("lastname") String lastname,@QueryParam("id") int id) {
         if (UserManager.createUser(login, password, firstname, lastname,id))
-            return Response.status(Status.CREATED).build();
+            return Response.status(Status.OK).entity("done").build();
         return Response.status(Status.CONFLICT).build();
 
     }

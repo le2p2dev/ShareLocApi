@@ -38,10 +38,17 @@ public class UserManager {
         return null;
     }
 
+    public static UserEntity login(String login, String password) {
+        UserEntity u = daoUser.findByName(login);
+        if (u != null && u.getPassword().equals(password))
+            return u;
+        return null;
+    }
+
     public static boolean createUser(String login, String password, String firstname, String lastname,int id) {
         UserEntity u = daoUser.find(id);
         if (u == null) {
-            daoUser.create(new UserEntity(login, password, firstname, lastname,id));
+            DAOUser.create(new UserEntity(login, password, firstname, lastname,id));
             return true;
         }
         return false;

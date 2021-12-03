@@ -4,12 +4,24 @@ import javax.persistence.*;
 import java.sql.Date;
 
 @Entity
-@Table(name = "houseshare", schema = "db_ShareLoc", catalog = "")
+@Table(name = "houseshare", schema = "db_ShareLoc")
 public class HouseshareEntity {
+
     private int id;
     private String name;
     private String description;
     private Date dateCreation;
+
+    public HouseshareEntity(int id, String name, String description, Date dateCreation) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.dateCreation = dateCreation;
+    }
+
+    public HouseshareEntity() {
+
+    }
 
     @Id
     @Column(name = "id")
