@@ -6,7 +6,7 @@ import com.example.sharelockapi.model.*;
 
 import java.util.List;
 
-public class UserHasHouseShareEntity {
+public class UserHasHouseShareManager {
 
     static DAOUserHasHouseShare daoUserHasHouseShare = new DAOUserHasHouseShare();
 
