@@ -18,6 +18,7 @@ import com.example.sharelockapi.controllers.HouseShareManager;
 import com.example.sharelockapi.controllers.UserHasHouseShareManager;
 import com.example.sharelockapi.controllers.UserManager;
 import com.example.sharelockapi.model.HouseshareEntity;
+import com.example.sharelockapi.model.UserEntity;
 import com.example.sharelockapi.model.UserHasHouseshareEntity;
 import com.example.sharelockapi.security.SignNeeded;
 
@@ -38,6 +39,8 @@ public class HouseShare {
                 );
         HouseshareEntity houseShare = HouseShareManager.getHouseShareById(userHasHouseshareEntity.getHouseShareId());
 
+        if(houseShare == null)
+            return Response.status(Status.CONFLICT).build();
         return  Response.status(Status.OK).entity(houseShare).build();
     }
 
@@ -45,11 +48,26 @@ public class HouseShare {
 
 
     @POST
+    @SignNeeded
     @Path("/create")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response signup(@QueryParam("login") String login) {
+    public Response create(
+            @QueryParam("id") int id,
+            @QueryParam("name") String name,
+            @QueryParam("description") String description,
+            @Context SecurityContext security
+                           ) {
 
-        return Response.status(Status.OK).build();
+        //Create an occurence of a new HouseShare
+        //then create userHasHouseShare  to link user and his houser share
+        UserEntity u = UserManager.getUser(security.getUserPrincipal().getName());
+        if(HouseShareManager.createHouseShare(id, name, description)){
+            //create userHasHouseShare
+            if(UserHasHouseShareManager.createUserHasHouseShare(u,HouseShareManager.getHouseShareById(id),0,1))
+                return Response.status(Status.OK).entity(HouseShareManager.getHouseShareById(id)).build();
+            return Response.status(Status.CONFLICT).entity("HouseShare builded but not link with user").build();
+        }
+        return Response.status(Status.CONFLICT).entity(HouseShareManager.getHouseShareById(id)).build();
 
     }
 

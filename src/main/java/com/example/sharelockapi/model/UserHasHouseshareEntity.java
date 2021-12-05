@@ -3,14 +3,14 @@ package com.example.sharelockapi.model;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "user_has_houseshare", schema = "db_ShareLoc", catalog = "")
+@Table(name = "user_has_houseshare", schema = "db_ShareLoc")
 public class UserHasHouseshareEntity {
     private int userId;
     private int houseShareId;
     private Integer point;
-    private Byte isOwner;
+    private int isOwner;
 
-    public UserHasHouseshareEntity(int userId, int houseShareId, Integer point, Byte isOwner) {
+    public UserHasHouseshareEntity(int userId, int houseShareId, Integer point, int isOwner) {
         this.userId = userId;
         this.houseShareId = houseShareId;
         this.point = point;
@@ -51,11 +51,11 @@ public class UserHasHouseshareEntity {
 
     @Basic
     @Column(name = "isOwner")
-    public Byte getIsOwner() {
+    public int getIsOwner() {
         return isOwner;
     }
 
-    public void setIsOwner(Byte isOwner) {
+    public void setIsOwner(int isOwner) {
         this.isOwner = isOwner;
     }
 
@@ -68,16 +68,10 @@ public class UserHasHouseshareEntity {
 
         if (userId != that.userId) return false;
         if (point != null ? !point.equals(that.point) : that.point != null) return false;
-        if (isOwner != null ? !isOwner.equals(that.isOwner) : that.isOwner != null) return false;
+        if (isOwner > 0 ? !(isOwner == that.isOwner) : that.isOwner > 0) return false;
 
         return true;
     }
 
-    @Override
-    public int hashCode() {
-        int result = userId;
-        result = 31 * result + (point != null ? point.hashCode() : 0);
-        result = 31 * result + (isOwner != null ? isOwner.hashCode() : 0);
-        return result;
-    }
+
 }

@@ -25,7 +25,7 @@ public class UserHasHouseShareManager {
 
 
 
-    public static boolean createUserHasHouseShare(UserEntity user, HouseshareEntity houseshare, int points, Byte isOwner) {
+    public static boolean createUserHasHouseShare(UserEntity user, HouseshareEntity houseshare, int points, int isOwner) {
         UserHasHouseshareEntity u = daoUserHasHouseShare.find(user.getId());
         if (u == null) {
             DAOUserHasHouseShare.create(
