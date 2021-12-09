@@ -17,8 +17,10 @@ public class DAOHouseShare {
     private static EntityManager em;
 
     public static EntityManager getEntityManager() {
-
-        return emf.createEntityManager();
+        if (em == null){
+            em = emf.createEntityManager();
+        }
+        return em;
     }
 
     /**

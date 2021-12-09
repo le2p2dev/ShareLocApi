@@ -4,6 +4,7 @@ import com.example.sharelockapi.dao.DAOTask;
 import com.example.sharelockapi.dao.DAOUserHasHouseShare;
 import com.example.sharelockapi.model.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserHasHouseShareManager {
@@ -23,17 +24,26 @@ public class UserHasHouseShareManager {
         return u;
     }
 
-
-
-    public static boolean createUserHasHouseShare(UserEntity user, HouseshareEntity houseshare, int points, Byte isOwner) {
-        UserHasHouseshareEntity u = daoUserHasHouseShare.find(user.getId());
-        if (u == null) {
-            DAOUserHasHouseShare.create(
-                    new UserHasHouseshareEntity(user.getId(),houseshare.getId(),points,isOwner)
-            );
-            return true;
+    public static List<UserHasHouseshareEntity> getUserHousShareByUserId(int id){
+        if(id <0){
+            return null;
         }
-        return false;
+        List<UserHasHouseshareEntity> list = new ArrayList<>();
+        list = DAOUserHasHouseShare.getUserHousShareByUserId(id);
+        return list;
+    }
+
+
+
+    public static boolean createUserHasHouseShare(int id,UserEntity user, HouseshareEntity houseshare, int points, int isOwner) {
+        try{
+            UserHasHouseshareEntity h = new UserHasHouseshareEntity(id,user.getId(),houseshare.getId(),points,isOwner);
+            DAOUserHasHouseShare.create(h);
+        }catch (Error e){
+            System.out.println(e);
+            return false;
+        }
+        return true;
     }
 
 }

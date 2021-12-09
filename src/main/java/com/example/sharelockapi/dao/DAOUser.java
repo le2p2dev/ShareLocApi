@@ -18,23 +18,22 @@ public class DAOUser {
     private static EntityManager em;
 
     public static EntityManager getEntityManager() {
-
-        return emf.createEntityManager();
+        if (em == null){
+            em = emf.createEntityManager();
+        }
+        return em;
     }
 
     /**
      * To create a new user use this method
      */
     public static UserEntity create(UserEntity u) {
-        EntityTransaction transaction = getEntityManager().getTransaction();
-        EntityManager manager = getEntityManager();
+        getEntityManager().getTransaction().begin();
 
-        transaction.begin();
-
-        manager.persist(u);
+        getEntityManager().persist(u);
 
 
-        transaction.commit();
+        getEntityManager().getTransaction().commit();
         return u;
     }
 

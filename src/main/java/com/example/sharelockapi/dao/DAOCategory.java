@@ -18,12 +18,15 @@ public class DAOCategory {
 
     private static final EntityManagerFactory emf =
             Persistence.createEntityManagerFactory("default");
+    private static EntityManager em;
 
 
 
-    public static EntityManager getEntityManager()
-    {
-        return emf.createEntityManager();
+    public static EntityManager getEntityManager() {
+        if (em == null){
+            em = emf.createEntityManager();
+        }
+        return em;
     }
 
     // TODO : create crud operations

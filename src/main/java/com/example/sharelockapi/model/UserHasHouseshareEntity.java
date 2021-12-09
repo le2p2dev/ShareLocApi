@@ -3,16 +3,19 @@ package com.example.sharelockapi.model;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "user_has_houseshare", schema = "db_ShareLoc", catalog = "")
+@Table(name = "user_has_houseshare", schema = "db_ShareLoc")
 public class UserHasHouseshareEntity {
-    private int userId;
-    private int houseShareId;
-    private Integer point;
-    private Byte isOwner;
 
-    public UserHasHouseshareEntity(int userId, int houseShareId, Integer point, Byte isOwner) {
+    private Integer userId;
+    private int Id;
+    private Integer houseshareId;
+    private Integer point;
+    private Integer isOwner;
+
+    public UserHasHouseshareEntity(int id,Integer userId, Integer houseshareId, Integer point, Integer isOwner) {
+        this.Id = id;
         this.userId = userId;
-        this.houseShareId = houseShareId;
+        this.houseshareId = houseshareId;
         this.point = point;
         this.isOwner = isOwner;
     }
@@ -21,22 +24,35 @@ public class UserHasHouseshareEntity {
 
     }
 
-    @Id
+    @javax.persistence.Id
+    public Integer getId() {
+        return Id;
+    }
+
+    public void setId(Integer id) {
+        Id = id;
+    }
+
+
+
+    @Basic
     @Column(name = "user_id")
-    public int getUserId() {
+    public Integer getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(Integer userId) {
         this.userId = userId;
     }
 
+    @Basic
     @Column(name = "houseshare_id")
-    public int getHouseShareId() {
-        return houseShareId;
+    public Integer getHouseshareId() {
+        return houseshareId;
     }
-    public void setHouseShareId(int houseShareId) {
-        this.houseShareId = houseShareId;
+
+    public void setHouseshareId(Integer houseshareId) {
+        this.houseshareId = houseshareId;
     }
 
     @Basic
@@ -51,11 +67,11 @@ public class UserHasHouseshareEntity {
 
     @Basic
     @Column(name = "isOwner")
-    public Byte getIsOwner() {
+    public Integer getIsOwner() {
         return isOwner;
     }
 
-    public void setIsOwner(Byte isOwner) {
+    public void setIsOwner(Integer isOwner) {
         this.isOwner = isOwner;
     }
 
@@ -66,7 +82,8 @@ public class UserHasHouseshareEntity {
 
         UserHasHouseshareEntity that = (UserHasHouseshareEntity) o;
 
-        if (userId != that.userId) return false;
+        if (userId != null ? !userId.equals(that.userId) : that.userId != null) return false;
+        if (houseshareId != null ? !houseshareId.equals(that.houseshareId) : that.houseshareId != null) return false;
         if (point != null ? !point.equals(that.point) : that.point != null) return false;
         if (isOwner != null ? !isOwner.equals(that.isOwner) : that.isOwner != null) return false;
 
@@ -75,7 +92,8 @@ public class UserHasHouseshareEntity {
 
     @Override
     public int hashCode() {
-        int result = userId;
+        int result = userId != null ? userId.hashCode() : 0;
+        result = 31 * result + (houseshareId != null ? houseshareId.hashCode() : 0);
         result = 31 * result + (point != null ? point.hashCode() : 0);
         result = 31 * result + (isOwner != null ? isOwner.hashCode() : 0);
         return result;
