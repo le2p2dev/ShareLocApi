@@ -25,15 +25,15 @@ public class UserHasHouseShareManager {
 
 
 
-    public static boolean createUserHasHouseShare(UserEntity user, HouseshareEntity houseshare, int points, int isOwner) {
-        UserHasHouseshareEntity u = daoUserHasHouseShare.find(user.getId());
-        if (u == null) {
-            DAOUserHasHouseShare.create(
-                    new UserHasHouseshareEntity(user.getId(),houseshare.getId(),points,isOwner)
-            );
-            return true;
+    public static boolean createUserHasHouseShare(int id,UserEntity user, HouseshareEntity houseshare, int points, int isOwner) {
+        try{
+            UserHasHouseshareEntity h = new UserHasHouseshareEntity(id,user.getId(),houseshare.getId(),points,isOwner);
+            DAOUserHasHouseShare.create(h);
+        }catch (Error e){
+            System.out.println(e);
+            return false;
         }
-        return false;
+        return true;
     }
 
 }

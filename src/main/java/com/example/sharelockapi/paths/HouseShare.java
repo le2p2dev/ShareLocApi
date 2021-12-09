@@ -52,7 +52,6 @@ public class HouseShare {
     @Path("/create")
     @Produces(MediaType.APPLICATION_JSON)
     public Response create(
-            @QueryParam("id") int id,
             @QueryParam("name") String name,
             @QueryParam("description") String description,
             @Context SecurityContext security
@@ -61,9 +60,11 @@ public class HouseShare {
         //Create an occurence of a new HouseShare
         //then create userHasHouseShare  to link user and his houser share
         UserEntity u = UserManager.getUser(security.getUserPrincipal().getName());
-        if(HouseShareManager.createHouseShare(id, name, description)){
+        int id = HouseShareManager.getHouseShares().size();
+        boolean bool = HouseShareManager.createHouseShare(name, description);
+        if(bool){
             //create userHasHouseShare
-            if(UserHasHouseShareManager.createUserHasHouseShare(u,HouseShareManager.getHouseShareById(id),0,1))
+            if(UserHasHouseShareManager.createUserHasHouseShare(UserHasHouseShareManager.getUserHasHouseShares().size(),u,HouseShareManager.getHouseShareById(id),0,1))
                 return Response.status(Status.OK).entity(HouseShareManager.getHouseShareById(id)).build();
             return Response.status(Status.CONFLICT).entity("HouseShare builded but not link with user").build();
         }

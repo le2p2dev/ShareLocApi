@@ -12,7 +12,7 @@ public class HouseshareEntity {
     private String description;
     private Date dateCreation;
 
-    public HouseshareEntity(int id, String name, String description, Date dateCreation) {
+    public HouseshareEntity(int id, String name, String description, Date dateCreation){
         this.id = id;
         this.name = name;
         this.description = description;

@@ -5,12 +5,13 @@ import javax.persistence.*;
 @Entity
 @Table(name = "user_has_houseshare", schema = "db_ShareLoc")
 public class UserHasHouseshareEntity {
+    private int id;
     private int userId;
     private int houseShareId;
     private Integer point;
     private int isOwner;
 
-    public UserHasHouseshareEntity(int userId, int houseShareId, Integer point, int isOwner) {
+    public UserHasHouseshareEntity(int id,int userId, int houseShareId, Integer point, int isOwner) {
         this.userId = userId;
         this.houseShareId = houseShareId;
         this.point = point;
@@ -20,8 +21,17 @@ public class UserHasHouseshareEntity {
     public UserHasHouseshareEntity() {
 
     }
-
     @Id
+    @Column(name = "id")
+    public int getId() {
+        return id;
+    }
+    public void setId(int id) {
+        this.id = id;
+    }
+
+
+
     @Column(name = "user_id")
     public int getUserId() {
         return userId;
