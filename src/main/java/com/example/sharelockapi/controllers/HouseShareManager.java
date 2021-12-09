@@ -30,11 +30,7 @@ public class HouseShareManager {
     public static boolean createHouseShare(String name,String description) {
         //get id ->
         int id = getHouseShares().size();
-        System.out.println(id);
-        System.out.println(id);
-        System.out.println(id);
-        System.out.println(id);
-        System.out.println(id);
+
         //création de l'objet date
         Date date = new Date();
         long timeInMilliSeconds = date.getTime();

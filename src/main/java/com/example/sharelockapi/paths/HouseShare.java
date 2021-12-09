@@ -1,6 +1,7 @@
 package com.example.sharelockapi.paths;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ws.rs.GET;
@@ -32,19 +33,20 @@ public class HouseShare {
     @Produces(MediaType.APPLICATION_JSON)
     public Response indexByUser(@Context SecurityContext security) {
 
-        //getting houseshare of user
-        UserHasHouseshareEntity userHasHouseshareEntity =
-                UserHasHouseShareManager.getUserHouseShareById(
-                        UserManager.getUser(security.getUserPrincipal().getName()).getId()
-                );
-        HouseshareEntity houseShare = HouseShareManager.getHouseShareById(userHasHouseshareEntity.getHouseShareId());
+        //getting user
+        UserEntity user = UserManager.getUser(security.getUserPrincipal().getName());
+        //Now that we have our user, we have to get houseshares using UserHasHouseshare
+        List<UserHasHouseshareEntity> list = UserHasHouseShareManager.getUserHousShareByUserId(user.getId());
+        List<HouseshareEntity> houseShareList = new ArrayList<>();
+        for(UserHasHouseshareEntity u : list){
+            houseShareList.add(HouseShareManager.getHouseShareById(u.getHouseshareId()));
+        }
 
-        if(houseShare == null)
-            return Response.status(Status.CONFLICT).build();
-        return  Response.status(Status.OK).entity(houseShare).build();
+        if(houseShareList.size() == 0){
+            return Response.status(Status.CONFLICT).entity("no houseshare founded").build();
+        }
+        return Response.status(Status.OK).entity(houseShareList).build();
     }
-
-
 
 
     @POST
@@ -55,16 +57,23 @@ public class HouseShare {
             @QueryParam("name") String name,
             @QueryParam("description") String description,
             @Context SecurityContext security
-                           ) {
+    ) {
 
         //Create an occurence of a new HouseShare
         //then create userHasHouseShare  to link user and his houser share
         UserEntity u = UserManager.getUser(security.getUserPrincipal().getName());
         int id = HouseShareManager.getHouseShares().size();
         boolean bool = HouseShareManager.createHouseShare(name, description);
-        if(bool){
+        System.out.println("Gros zizi");
+        System.out.println(HouseShareManager.getHouseShareById(id));
+        System.out.println(HouseShareManager.getHouseShareById(id));
+        System.out.println(HouseShareManager.getHouseShareById(id));
+        if (bool) {
             //create userHasHouseShare
-            if(UserHasHouseShareManager.createUserHasHouseShare(UserHasHouseShareManager.getUserHasHouseShares().size(),u,HouseShareManager.getHouseShareById(id),0,1))
+            if (
+                    UserHasHouseShareManager.createUserHasHouseShare
+                            (id,u, HouseShareManager.getHouseShareById(id), 0, 1)
+            )
                 return Response.status(Status.OK).entity(HouseShareManager.getHouseShareById(id)).build();
             return Response.status(Status.CONFLICT).entity("HouseShare builded but not link with user").build();
         }

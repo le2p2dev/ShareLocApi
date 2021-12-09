@@ -4,6 +4,7 @@ import com.example.sharelockapi.dao.DAOTask;
 import com.example.sharelockapi.dao.DAOUserHasHouseShare;
 import com.example.sharelockapi.model.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserHasHouseShareManager {
@@ -21,6 +22,15 @@ public class UserHasHouseShareManager {
 
         UserHasHouseshareEntity u = daoUserHasHouseShare.find(id);
         return u;
+    }
+
+    public static List<UserHasHouseshareEntity> getUserHousShareByUserId(int id){
+        if(id <0){
+            return null;
+        }
+        List<UserHasHouseshareEntity> list = new ArrayList<>();
+        list = DAOUserHasHouseShare.getUserHousShareByUserId(id);
+        return list;
     }
 
 

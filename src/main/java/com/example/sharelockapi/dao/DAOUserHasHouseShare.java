@@ -1,13 +1,17 @@
 package com.example.sharelockapi.dao;
 
+import com.example.sharelockapi.controllers.UserHasHouseShareManager;
+import com.example.sharelockapi.model.UserEntity;
 import com.example.sharelockapi.model.UserHasHouseshareEntity;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 
 public class DAOUserHasHouseShare {
@@ -42,6 +46,18 @@ public class DAOUserHasHouseShare {
         getEntityManager().getTransaction().commit();
 
         return u;
+    }
+
+    public static List<UserHasHouseshareEntity> getUserHousShareByUserId(int userId){
+        Query query = getEntityManager().createQuery("SELECT uhh.id FROM UserHasHouseshareEntity uhh WHERE uhh.userId = " + userId,UserHasHouseshareEntity.class);
+        List<UserHasHouseshareEntity> list = new ArrayList<>();
+        List list1 = query.getResultList();
+        for (Object id : list1) {
+            list.add(UserHasHouseShareManager.getUserHouseShareById((int) id));
+         }
+        return list;
+
+
     }
 
 
