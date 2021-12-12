@@ -64,10 +64,6 @@ public class HouseShare {
         UserEntity u = UserManager.getUser(security.getUserPrincipal().getName());
         int id = HouseShareManager.getHouseShares().size();
         boolean bool = HouseShareManager.createHouseShare(name, description);
-        System.out.println("Gros zizi");
-        System.out.println(HouseShareManager.getHouseShareById(id));
-        System.out.println(HouseShareManager.getHouseShareById(id));
-        System.out.println(HouseShareManager.getHouseShareById(id));
         if (bool) {
             //create userHasHouseShare
             if (

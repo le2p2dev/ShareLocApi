@@ -8,5 +8,12 @@
       <jdbc-url>jdbc:mysql://localhost:3306/db_ShareLoc</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
+    <data-source source="LOCAL" name="MySQL - shareloc@54.36.191.192" uuid="6d837141-c324-4da4-9e02-38160a4c3f13">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://54.36.191.192:3306/shareloc</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
   </component>
 </project>

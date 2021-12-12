@@ -25,6 +25,11 @@ public class TaskManager {
         return u;
     }
 
+    public static List<TaskEntity> getTasksByHouseShareId(int id){
+        List<TaskEntity> ct = DAOTask.findByHouseShareId(id);
+        return ct;
+    }
+
 
 
     public static boolean createTask(int id, HouseshareEntity houseshare,CategoryEntity category,int points, String description,String title) {

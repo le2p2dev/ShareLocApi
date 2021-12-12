@@ -24,6 +24,13 @@ import com.example.sharelockapi.security.SignNeeded;
 public class Authentification {
 
     @GET
+    @Path("/test")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response Test(){
+        return Response.status(Status.OK).entity("Everything Working").build();
+    }
+
+    @GET
     @SignNeeded
     @Path("/whoami")
     @Produces(MediaType.APPLICATION_JSON)
