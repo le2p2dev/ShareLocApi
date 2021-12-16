@@ -4,11 +4,7 @@ package com.example.sharelockapi.paths;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -53,9 +49,10 @@ public class HouseShare {
     @SignNeeded
     @Path("/create")
     @Produces(MediaType.APPLICATION_JSON)
+    @Consumes("application/x-www-form-urlencoded")
     public Response create(
-            @QueryParam("name") String name,
-            @QueryParam("description") String description,
+            @FormParam("name") String name,
+            @FormParam("description") String description,
             @Context SecurityContext security
     ) {
 

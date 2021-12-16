@@ -4,11 +4,7 @@ package com.example.sharelockapi.paths;
 
 import java.util.List;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -30,6 +26,13 @@ public class Authentification {
         return Response.status(Status.OK).entity("Everything Working").build();
     }
 
+    @POST
+    @Path("/testForm")
+    @Consumes("application/x-www-form-urlencoded")
+    public Response postTest(@FormParam("name") String name){
+            return Response.status(Status.OK).entity(name).build();
+    }
+
     @GET
     @SignNeeded
     @Path("/whoami")
@@ -47,7 +50,8 @@ public class Authentification {
     @POST
     @Path("/signin")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response signin(@QueryParam("login") String login, @QueryParam("password") String password) {
+    @Consumes("application/x-www-form-urlencoded")
+    public Response signin(@FormParam("login") String login, @FormParam("password") String password) {
         UserEntity u = UserManager.login(login, password);
 
         if (u != null)
@@ -59,9 +63,12 @@ public class Authentification {
     @POST
     @Path("/signup")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response signup(@QueryParam("login") String login, @QueryParam("password") String password,
-                           @QueryParam("firstname") String firstname, @QueryParam("lastname") String lastname,@QueryParam("id") int id) {
+    @Consumes("application/x-www-form-urlencoded")
+    public Response signup(@FormParam("login") String login, @FormParam("password") String password,
+                           @FormParam("firstname") String firstname, @FormParam("lastname") String lastname) {
 
+
+        int id = UserManager.getUsers().size();
 
         if (UserManager.createUser(login, password, firstname, lastname,id))
             return Response.status(Status.OK).entity("done").build();

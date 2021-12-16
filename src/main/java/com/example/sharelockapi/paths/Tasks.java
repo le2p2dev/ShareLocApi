@@ -1,19 +1,10 @@
 package com.example.sharelockapi.paths;
 
-import com.example.sharelockapi.controllers.HouseShareManager;
-import com.example.sharelockapi.controllers.TaskManager;
-import com.example.sharelockapi.controllers.UserHasHouseShareManager;
-import com.example.sharelockapi.controllers.UserManager;
-import com.example.sharelockapi.model.HouseshareEntity;
-import com.example.sharelockapi.model.TaskEntity;
-import com.example.sharelockapi.model.UserEntity;
-import com.example.sharelockapi.model.UserHasHouseshareEntity;
+import com.example.sharelockapi.controllers.*;
+import com.example.sharelockapi.model.*;
 import com.example.sharelockapi.security.SignNeeded;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -29,6 +20,7 @@ public class Tasks {
     @SignNeeded
     @Path("/index")
     @Produces(MediaType.APPLICATION_JSON)
+
     public Response tasksByHouseShare(@Context SecurityContext security, @QueryParam("idHouseShare") int idHouseShare) {
         //TODO : check if its the right user
         //getting user
@@ -48,5 +40,23 @@ public class Tasks {
         //get task by idHouseShare
         List<TaskEntity> list1 = TaskManager.getTasksByHouseShareId(idHouseShare);
         return Response.status(Response.Status.OK).entity(list1).build();
+    }
+
+    @POST
+    @SignNeeded
+    @Path("/create")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes("application/x-www-form-urlencoded")
+    public Response createTask(@Context SecurityContext security,@FormParam("idHouseShare") int idHouseShare,@FormParam("idCategory") int idCategory,@FormParam("point") int point,@FormParam("title") String title,@FormParam("description") String description){
+        int id = TaskManager.getTasks().size();
+        UserEntity user = UserManager.getUser(security.getUserPrincipal().getName());
+        HouseshareEntity houseshare = HouseShareManager.getHouseShareById(idHouseShare);
+        CategoryEntity category = CategoryManager.getCategoryById(idCategory);
+
+        if(TaskManager.createTask(id,houseshare,category,point,description,title)){
+            return Response.status(Response.Status.OK).entity("done").build();
+        }
+        return Response.status(Response.Status.CONFLICT).entity("problem occured").build();
+
     }
 }
