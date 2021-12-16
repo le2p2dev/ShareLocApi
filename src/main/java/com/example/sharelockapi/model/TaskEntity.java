@@ -3,7 +3,7 @@ package com.example.sharelockapi.model;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "Task", schema = "db_ShareLoc", catalog = "")
+@Table(name = "Task", schema = "shareloc", catalog = "")
 public class TaskEntity {
     private int id;
     private int houseShareId;
