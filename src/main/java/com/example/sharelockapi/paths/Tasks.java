@@ -44,6 +44,24 @@ public class Tasks {
 
     @POST
     @SignNeeded
+    @Path("/delete")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes("application/x-www-form-urlencoded")
+    public Response deleteTask(@Context SecurityContext security,@FormParam("id") int id){
+        //TODO : check if this user has access to this task
+        //getting user and the task
+        UserEntity user = UserManager.getUser(security.getUserPrincipal().getName());
+        TaskEntity taskEntity = TaskManager.getTaskById(id);
+        if(taskEntity == null){
+            return Response.status(Response.Status.CONFLICT).entity("problem occured").build();
+        }
+        //TaskManager.deleteTask()
+        return Response.status(Response.Status.CONFLICT).entity("problem occured").build();
+
+    }
+
+    @POST
+    @SignNeeded
     @Path("/create")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes("application/x-www-form-urlencoded")

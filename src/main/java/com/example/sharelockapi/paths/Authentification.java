@@ -3,6 +3,7 @@ package com.example.sharelockapi.paths;
 
 
 import java.util.List;
+import java.util.Objects;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
@@ -12,12 +13,16 @@ import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.SecurityContext;
 
 import com.example.sharelockapi.controllers.UserManager;
+import com.example.sharelockapi.jsonObjects.JWTJson;
+import com.example.sharelockapi.jsonObjects.UserJSON;
 import com.example.sharelockapi.model.UserEntity;
 import com.example.sharelockapi.security.JWTokenUtility;
 import com.example.sharelockapi.security.SignNeeded;
 
 @Path("/")
 public class Authentification {
+
+
 
     @GET
     @Path("/test")
@@ -28,7 +33,7 @@ public class Authentification {
 
     @POST
     @Path("/testForm")
-    @Consumes("application/x-www-form-urlencoded")
+    @Consumes("application/json")
     public Response postTest(@FormParam("name") String name){
             return Response.status(Status.OK).entity(name).build();
     }
@@ -41,7 +46,8 @@ public class Authentification {
         try {
             System.err.println(">> whoami");
             UserEntity user = UserManager.getUser(security.getUserPrincipal().getName());
-            return Response.ok().entity(user).build();
+            JWTJson jwtJson = new JWTJson(JWTokenUtility.buildJWT(user.getLogin()),user.getLogin());
+            return Response.ok(jwtJson,MediaType.APPLICATION_JSON).entity(user).build();
         } catch (NullPointerException e) {
             return Response.status(Status.NO_CONTENT).build();
         }
@@ -50,14 +56,25 @@ public class Authentification {
     @POST
     @Path("/signin")
     @Produces(MediaType.APPLICATION_JSON)
-    @Consumes("application/x-www-form-urlencoded")
-    public Response signin(@FormParam("login") String login, @FormParam("password") String password) {
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response signin(UserJSON userJSON) {
+
+        //TODO : find user
+        UserEntity user = UserManager.getUser(userJSON.login);
+        if(Objects.equals(user.getPassword(), userJSON.password)){
+            JWTJson jwtJson = new JWTJson(JWTokenUtility.buildJWT(user.getLogin()),user.getLogin());
+            return Response.ok(jwtJson,MediaType.APPLICATION_JSON).build();
+        }
+        return Response.status(Status.NOT_ACCEPTABLE).build();
+        /*
         UserEntity u = UserManager.login(login, password);
 
         if (u != null)
             return Response.ok().entity(JWTokenUtility.buildJWT(u.getLogin())).build();
 
-        return Response.status(Status.NOT_ACCEPTABLE).build();
+
+
+         */
     }
 
     @POST

@@ -11,6 +11,8 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 import java.util.List;
 
+
+@Path("/category")
 public class Category {
     @GET
     @SignNeeded
@@ -27,7 +29,7 @@ public class Category {
     @Path("/create")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes("application/x-www-form-urlencoded")
-    public Response createCategory(@Context SecurityContext security,@FormParam("idHouseShare") String label ){
+    public Response createCategory(@Context SecurityContext security,@FormParam("label") String label ){
         int id = CategoryManager.getCategories().size();
 
         if(CategoryManager.createCategoriy(id,label)){
