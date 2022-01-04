@@ -15,6 +15,7 @@ import javax.ws.rs.core.SecurityContext;
 import com.example.sharelockapi.controllers.UserManager;
 import com.example.sharelockapi.jsonObjects.JWTJson;
 import com.example.sharelockapi.jsonObjects.UserJSON;
+import com.example.sharelockapi.jsonObjects.UserSignupJSON;
 import com.example.sharelockapi.model.UserEntity;
 import com.example.sharelockapi.security.JWTokenUtility;
 import com.example.sharelockapi.security.SignNeeded;
@@ -80,14 +81,13 @@ public class Authentification {
     @POST
     @Path("/signup")
     @Produces(MediaType.APPLICATION_JSON)
-    @Consumes("application/x-www-form-urlencoded")
-    public Response signup(@FormParam("login") String login, @FormParam("password") String password,
-                           @FormParam("firstname") String firstname, @FormParam("lastname") String lastname) {
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response signup(UserSignupJSON userSignupJSON) {
 
 
         int id = UserManager.getUsers().size();
 
-        if (UserManager.createUser(login, password, firstname, lastname,id))
+        if (UserManager.createUser(userSignupJSON.login,userSignupJSON.password, userSignupJSON.firstname, userSignupJSON.lastname,id))
             return Response.status(Status.OK).entity("done").build();
         return Response.status(Status.CONFLICT).build();
 

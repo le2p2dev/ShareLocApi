@@ -39,7 +39,7 @@ public class HouseShare {
         }
 
         if(houseShareList.size() == 0){
-            return Response.status(Status.CONFLICT).entity("no houseshare founded").build();
+            return Response.status(Status.OK).entity("no houseshare founded").build();
         }
         return Response.status(Status.OK).entity(houseShareList).build();
     }
