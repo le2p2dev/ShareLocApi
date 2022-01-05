@@ -10,6 +10,10 @@ import java.util.List;
 @XmlRootElement
 public class HouseShareJson {
 
-    @XmlElement(name = "houses")
-    public List<HouseshareEntity> houses;
+    @XmlElement(name = "name")
+    public String name;
+
+    @XmlElement(name = "description")
+    public String description;
+
 }

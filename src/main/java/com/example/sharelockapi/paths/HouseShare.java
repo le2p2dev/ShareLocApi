@@ -14,6 +14,7 @@ import javax.ws.rs.core.SecurityContext;
 import com.example.sharelockapi.controllers.HouseShareManager;
 import com.example.sharelockapi.controllers.UserHasHouseShareManager;
 import com.example.sharelockapi.controllers.UserManager;
+import com.example.sharelockapi.jsonObjects.HouseShareJson;
 import com.example.sharelockapi.model.HouseshareEntity;
 import com.example.sharelockapi.model.UserEntity;
 import com.example.sharelockapi.model.UserHasHouseshareEntity;
@@ -49,18 +50,16 @@ public class HouseShare {
     @SignNeeded
     @Path("/create")
     @Produces(MediaType.APPLICATION_JSON)
-    @Consumes("application/x-www-form-urlencoded")
-    public Response create(
-            @FormParam("name") String name,
-            @FormParam("description") String description,
-            @Context SecurityContext security
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response create(HouseShareJson houseShareJSON,
+                           @Context SecurityContext security
     ) {
 
         //Create an occurence of a new HouseShare
         //then create userHasHouseShare  to link user and his houser share
         UserEntity u = UserManager.getUser(security.getUserPrincipal().getName());
         int id = HouseShareManager.getHouseShares().size();
-        boolean bool = HouseShareManager.createHouseShare(name, description);
+        boolean bool = HouseShareManager.createHouseShare(houseShareJSON.name, houseShareJSON.description);
         if (bool) {
             //create userHasHouseShare
             if (
