@@ -23,8 +23,6 @@ import com.example.sharelockapi.security.SignNeeded;
 @Path("/")
 public class Authentification {
 
-
-
     @GET
     @Path("/test")
     @Produces(MediaType.APPLICATION_JSON)
@@ -69,12 +67,8 @@ public class Authentification {
         return Response.status(Status.NOT_ACCEPTABLE).build();
         /*
         UserEntity u = UserManager.login(login, password);
-
         if (u != null)
             return Response.ok().entity(JWTokenUtility.buildJWT(u.getLogin())).build();
-
-
-
          */
     }
 

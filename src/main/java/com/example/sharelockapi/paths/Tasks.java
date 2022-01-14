@@ -1,6 +1,8 @@
 package com.example.sharelockapi.paths;
 
 import com.example.sharelockapi.controllers.*;
+import com.example.sharelockapi.jsonObjects.RespJson;
+import com.example.sharelockapi.jsonObjects.TaskJSON;
 import com.example.sharelockapi.model.*;
 import com.example.sharelockapi.security.SignNeeded;
 
@@ -20,26 +22,46 @@ public class Tasks {
     @SignNeeded
     @Path("/index")
     @Produces(MediaType.APPLICATION_JSON)
-
     public Response tasksByHouseShare(@Context SecurityContext security, @QueryParam("idHouseShare") int idHouseShare) {
-        //TODO : check if its the right user
-        //getting user
+        /*
+            1/ TODO : récupérer l'utilisateur courant
+            2/ récupérer toutes les colloc de l'utilisateur
+            3/ garder la colloc de la query param
+            récuperer les tache associé à cette
+         */
         UserEntity user = UserManager.getUser(security.getUserPrincipal().getName());
+        List<UserHasHouseshareEntity> listUserHouse = UserHasHouseShareManager.getUserHousShareByUserId(user.getId());
+        List<UserHasHouseshareEntity> listofGoodHouseShare  = new ArrayList<>();
+        boolean listUserisNull = false;
 
-        //if userHasHouseShare is empty return error access
-        List<UserHasHouseshareEntity> list = UserHasHouseShareManager.getUserHousShareByUserId(user.getId());
-        boolean noHouseShare = true;
-        for(UserHasHouseshareEntity u : list){
-            if(u.getHouseshareId().equals(idHouseShare)){
-                noHouseShare = false;
+        if(listUserHouse == null){
+            listUserisNull = true;
+        }
+        if( listUserisNull ){
+            return Response.status(Response.Status.CONFLICT).build();
+        }else{
+            for(UserHasHouseshareEntity userHasHouseshare : listUserHouse){
+                if(userHasHouseshare.getHouseshareId() == idHouseShare){
+                    listofGoodHouseShare.add(userHasHouseshare);
+                }
             }
-        }
-        if(noHouseShare){
-            return Response.status(Response.Status.CONFLICT).entity("you dont have permissions to see theses tasks").build();
-        }
-        //get task by idHouseShare
-        List<TaskEntity> list1 = TaskManager.getTasksByHouseShareId(idHouseShare);
-        return Response.status(Response.Status.OK).entity(list1).build();
+            //we now have the right association user - colloc
+            //we can get tasks
+            List <TaskEntity> list = TaskManager.getTasks();
+            List <TaskEntity> finalList = new ArrayList<TaskEntity>();
+            if ( list == null){
+                return Response.status(Response.Status.OK).entity("no tasks").build();
+            }else{
+                for(TaskEntity task : list){
+                    if( task.getHouseShareId() == idHouseShare){
+                        finalList.add(task);
+                    }
+                }
+            }
+
+            return Response.status(Response.Status.OK).entity(finalList).build();
+
+       }
     }
 
     @POST
@@ -55,7 +77,13 @@ public class Tasks {
         if(taskEntity == null){
             return Response.status(Response.Status.CONFLICT).entity("problem occured").build();
         }
-        //TaskManager.deleteTask()
+
+        try{
+            TaskManager.deleteTask(TaskManager.getTaskById(id));
+        }catch (Error e){
+            System.out.println(e);
+        }
+
         return Response.status(Response.Status.CONFLICT).entity("problem occured").build();
 
     }
@@ -64,15 +92,15 @@ public class Tasks {
     @SignNeeded
     @Path("/create")
     @Produces(MediaType.APPLICATION_JSON)
-    @Consumes("application/x-www-form-urlencoded")
-    public Response createTask(@Context SecurityContext security,@FormParam("idHouseShare") int idHouseShare,@FormParam("idCategory") int idCategory,@FormParam("point") int point,@FormParam("title") String title,@FormParam("description") String description){
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response createTask(@Context SecurityContext security, TaskJSON taskJSON){
         int id = TaskManager.getTasks().size();
         UserEntity user = UserManager.getUser(security.getUserPrincipal().getName());
-        HouseshareEntity houseshare = HouseShareManager.getHouseShareById(idHouseShare);
-        CategoryEntity category = CategoryManager.getCategoryById(idCategory);
+        HouseshareEntity houseshare = HouseShareManager.getHouseShareById(taskJSON.idHouseShare);
+        CategoryEntity category = CategoryManager.getCategoryById(taskJSON.idCategory);
 
-        if(TaskManager.createTask(id,houseshare,category,point,description,title)){
-            return Response.status(Response.Status.OK).entity("done").build();
+        if(TaskManager.createTask(id,houseshare,category,taskJSON.point,taskJSON.description,taskJSON.title)){
+            return Response.ok(new RespJson("done"),MediaType.APPLICATION_JSON).build();
         }
         return Response.status(Response.Status.CONFLICT).entity("problem occured").build();
 

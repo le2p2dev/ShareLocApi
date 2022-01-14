@@ -23,6 +23,31 @@ import com.example.sharelockapi.security.SignNeeded;
 @Path("/houseshare")
 public class HouseShare {
 
+    @DELETE
+    @SignNeeded
+    @Path("/delete")
+    public Response deleteHouseShare(@Context SecurityContext security,@QueryParam("id") int id){
+
+        UserEntity user = UserManager.getUser(security.getUserPrincipal().getName());
+        List<UserHasHouseshareEntity> listUserHouse = UserHasHouseShareManager.getUserHousShareByUserId(user.getId());
+        boolean listUserisNull = false;
+
+        if(listUserHouse == null){
+            listUserisNull = true;
+        }
+        if( listUserisNull ){
+            return Response.status(Response.Status.CONFLICT).build();
+        }else{
+            for(UserHasHouseshareEntity userHasHouseshare : listUserHouse){
+                if(userHasHouseshare.getHouseshareId() == id && userHasHouseshare.getIsOwner() == 1 ){
+                    HouseShareManager.delete(HouseShareManager.getHouseShareById(id));
+                        return Response.status(Status.OK).entity("done").build();
+                }
+            }
+    }
+        return Response.status(Response.Status.CONFLICT).build();
+    }
+
 
     @GET
     @SignNeeded

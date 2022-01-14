@@ -26,6 +26,16 @@ public class HouseShareManager {
     }
 
 
+    public static void delete (HouseshareEntity houseshare){
+        try{
+            DAOHouseShare.delete(houseshare);
+        }catch (Error error){
+            System.out.println(error);
+        }
+
+    }
+
+
 
     public static boolean createHouseShare(String name,String description) {
         //get id ->
