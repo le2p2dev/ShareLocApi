@@ -12,6 +12,14 @@ public class TaskManager {
 
     static DAOTask daoTask = new DAOTask();
 
+    public static void deleteTask(TaskEntity task){
+        try{
+            DAOTask.remove(task);
+        }catch (Error error){
+            System.out.println(error);
+        }
+    }
+
     public static List<TaskEntity> getTasks() {
         List<TaskEntity> ct = daoTask.findAll();
         return ct;
@@ -24,6 +32,13 @@ public class TaskManager {
         TaskEntity u = daoTask.find(id);
         return u;
     }
+
+    public static List<TaskEntity> getTasksByHouseShareId(int id){
+        List<TaskEntity> ct = DAOTask.findByHouseShareId(id);
+        return ct;
+    }
+
+
 
 
 

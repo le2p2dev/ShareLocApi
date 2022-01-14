@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.sql.Date;
 
 @Entity
-@Table(name = "houseshare", schema = "db_ShareLoc")
+@Table(name = "houseshare", schema = "shareloc")
 public class HouseshareEntity {
 
     private int id;

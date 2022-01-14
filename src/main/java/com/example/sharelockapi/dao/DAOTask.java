@@ -1,13 +1,18 @@
 package com.example.sharelockapi.dao;
 
+import com.example.sharelockapi.controllers.TaskManager;
+import com.example.sharelockapi.controllers.UserHasHouseShareManager;
 import com.example.sharelockapi.model.TaskEntity;
+import com.example.sharelockapi.model.UserHasHouseshareEntity;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 
 public class DAOTask {
@@ -44,6 +49,21 @@ public class DAOTask {
         return u;
     }
 
+    /**
+     * Get tasks by houseshare id
+     */
+    public static List<TaskEntity> findByHouseShareId(int id){
+        Query query = getEntityManager().createQuery(
+                "SELECT t.id from TaskEntity t WHERE t.houseShareId =" + id,TaskEntity.class);
+
+        List<TaskEntity> list = new ArrayList<>();
+        List list1 = query.getResultList();
+        for (Object id1 : list1) {
+            list.add(TaskManager.getTaskById((int) id1));
+        }
+        return list;
+
+    }
 
     /**
      * to remove an task

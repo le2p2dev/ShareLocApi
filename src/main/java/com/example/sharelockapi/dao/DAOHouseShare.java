@@ -34,6 +34,10 @@ public class DAOHouseShare {
         return u;
     }
 
+    public static void delete(HouseshareEntity u){
+        getEntityManager().remove(getEntityManager().merge(u));
+    }
+
     /**
      * TO edit à houseshare
      */
